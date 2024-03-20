@@ -99,6 +99,23 @@ class MoviesInfoControllerUnitTest {
     }
 
     @Test
+    void addMovieInfoValidation() {
+
+        var movieInfo = new MovieInfo("3", "",
+                -2005, List.of("Christian Bale", "Michael Cane"), LocalDate.parse("2005-06-15"));
+
+        when(movieInfoServiceMock.addMovieInfo(isA(MovieInfo.class))).thenReturn(Mono.just(movieInfo));
+
+        webTestClient
+                .post()
+                .uri("/v1/movieinfos")
+                .bodyValue(movieInfo)
+                .exchange()
+                .expectStatus()
+                .isBadRequest();
+    }
+
+    @Test
     void updateMovieInfo() {
 
         var movieInfoId = "abc";
