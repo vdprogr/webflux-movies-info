@@ -5,11 +5,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
@@ -117,5 +114,30 @@ class MovieInfoRepositoryIntegTest {
         StepVerifier.create(moviesInfoFlux)
                 .expectNextCount(2)
                 .verifyComplete();
+    }
+
+    @Test
+    void findByYear() {
+        //given
+
+        //when
+        var moviesInfoMono = movieInfoRepository.findByYear(2005).log();
+
+        //then
+        StepVerifier.create(moviesInfoMono)
+                .expectNextCount(1)
+                .verifyComplete();
+    }
+
+    @Test
+    void findByName() {
+
+        var movieInfosMono = movieInfoRepository.findByName("Batman Begins").log();
+
+        StepVerifier.create(movieInfosMono)
+                .expectNextCount(1)
+                .verifyComplete();
+
+
     }
 }
